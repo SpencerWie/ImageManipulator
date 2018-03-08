@@ -1,0 +1,50 @@
+.col {
+  border-left: 1px solid grey;
+  border-right: 1px solid grey;
+  background-color: lightgrey;
+  max-width: 50%;
+}
+
+.imageContainer {
+  display:inline-block;
+  position: relative;
+  left: 50%;
+  top: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  background-color: grey;
+  max-width: 100%;
+}
+
+body {
+  background-color: lightgrey;
+  overflow:hidden;
+  min-height: 100% 
+}
+
+html, body {
+  margin: 0;
+  height: 100%;
+}
+
+.container-fluid, .row{
+  height: 100%;
+}
+
+.extractedText{
+  resize: none;
+  min-width: 50%;
+  height: 100%;
+}
+
+.gutter.gutter-vertical {
+    background-color: #343a40;
+    cursor: ns-resize;
+}
+
+#textWindow{
+  background-color: grey;
+}
+
+#imageWindow{
+  overflow: hidden;
+}
