@@ -82,6 +82,7 @@ ImageObj.prototype.apply_sharpen = function(){
 
 // Applies OCR using Tessseract on both oringal and processed image items.
 ImageObj.prototype.OCR = function(){
+  /*
   $("textarea").css("background-color", "darkgrey");
   Tesseract.recognize($('#imageSrc')[0])
   .then(function(result){
@@ -93,4 +94,18 @@ ImageObj.prototype.OCR = function(){
       $("#canvasText").val(result.text);
       $("#canvasText").css("background-color", "white");
   });
+  */
+  console.log($('#canvasOutput')[0].toDataURL("image/png"));
+  console.log($('#imageSrc').attr("src"));
+  console.log("Running Tesseract through server...");
+  var obj = { 
+    base64: $('#canvasOutput')[0].toDataURL("image/png"),
+    imgULR: $('#imageSrc').attr("src")
+  };
+  $.post("http://127.0.0.1:3000/", JSON.stringify(obj))
+    .done(function(data){
+      alert(data);
+    }).fail(function() {
+      console.log("There was a problem running the task on the server.")
+    });
 }
