@@ -35,3 +35,12 @@ Below is an example where deceases brightness mixed with increases contrast, alo
 * [jQuery](https://jquery.com/) / [jQuery PanZoom](https://github.com/timmywil/jquery.panzoom) - Libary used for help with pan and zoom operations
 * [Tesseract.js](https://github.com/naptha/tesseract.js) - Used for image OCR into text.
 * [Bootstrap 4](https://getbootstrap.com/) - Used for consitence page styling and look across broswers (*Modifed to fix visual issue it creates on dat.GUI*)
+
+---
+
+### Whats coming in Version 0.4:
+
+* Node.JS Local Server to allow Tesseract or any OCR to be ran via system command line to drastically improve performance and accuracy.
+* Interface for Tessseract OCR parameters.
+* Improved Memory useage of Tesseract.js to allow to OCR large images.
+* *"Real-time"* checkbox with update button to improve manipulation performance on large images.
