@@ -1,10 +1,12 @@
-var imgElement = document.getElementById('imageSrc');
-var inputElement = document.getElementById('fileInput');
 var gui;
 
-inputElement.addEventListener('change', (e) => {
-  imgElement.src = URL.createObjectURL(e.target.files[0]);
-}, false);
+$("#fileInput").on('change', (e) => {
+  $("#imageSrc").attr('src', URL.createObjectURL(e.target.files[0]));
+});
+
+$("#ocrOptions").on('click', (e) => {
+  $( "#dialog" ).dialog({width: 600});
+});
 
 window.onload = function(){
 	gui = new dat.GUI();

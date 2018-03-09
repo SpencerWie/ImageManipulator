@@ -1,4 +1,5 @@
 const http = require('http'), fs = require('fs'), url = require("url"), path = require("path");
+const { exec } = require('child_process');
 
 const hostname = '127.0.0.1';
 const port = 3000;
@@ -27,9 +28,10 @@ function handleTesseractPostCall(req, res){
     try {
       console.log("JSON data sucessfully extracted.");
       var obj = JSON.parse(json);
-      saveBase64ToPng(obj.base64);
-      console.log(manipulatedImageFilename);
-      console.log(obj.imgURL);
+      var filename = obj.name + ".png";
+      saveBase64ToPng(obj.base64, filename);
+      if(obj.name != null && obj.name.length > 0)
+        runTesseractOCR(filename, res);
     } 
     catch(e) {
       console.log("Invalid JSON input detected, aborting request");
@@ -65,15 +67,27 @@ function loadResources(req, res, type){
   }
 }
 
-function saveBase64ToPng(base64){
+function saveBase64ToPng(base64, filename){
   base64 = base64.replace(/^data:image\/png;base64,/, "");
-  
-  fs.writeFile(manipulatedImageFilename, base64, 'base64', function(err) {
+  fs.writeFile(filename, base64, 'base64', function(err) {
     if(err == null) {
-      console.log("Images successfully saved as " + manipulatedImageFilename);
+      console.log("Images successfully saved as: " + filename);
     } else {
       console.log(err);
     }
+  });
+}
+
+function runTesseractOCR(filename, res){
+  var command = "tesseract " + filename + " stdout --oem 1 --psm 12 -l eng";
+  exec(command, (err, stdout, stderr) => {
+    if(err){
+      console.log("Node.JS was unable to execute the command:");
+      console.log(command);
+      cosnole.log(err);
+    }
+    res.write(stdout);
+    res.end();
   });
 }
 

@@ -3,7 +3,9 @@
 <head>
 <meta charset="utf-8">
 <title>Image Manipulator</title>
+<link rel="shortcut icon" href="">
 <link rel="stylesheet" href="css/bootstrapM.min.css" >
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" >
 <link rel="stylesheet" href="css/main.css" >
 </head>
 <body>
@@ -19,6 +21,9 @@
           <form class="form-inline my-2 my-lg-0">
             <input type="file" id="fileInput" class="form-control mr-sm-2" name="file" />
           </form>
+        </li>
+        <li class="nav-item">
+          <button id="ocrOptions" class="btn btn-primary">OCR Options</button>
         </li>
       </ul>
     </div>
@@ -46,12 +51,52 @@
         </div>
     </form>
   </div>
+  <div id="dialog" title="OCR Options">
+    <form>
+      <div class="form-group">
+        <label for="tesseractType">Tesseract Type</label>
+        <select class="form-control" id="tesseractType">
+          <option value="tesseract">Installed Tesseract</option>
+          <option value="tesseract.js">Tesseract.js</option>
+        </select>
+      </div>    
+      <div class="form-group">
+        <label for="ocrEngineMode">OCR Engine Mode</label>
+        <select class="form-control" id="ocrEngineMode">
+          <option value=0>0 Original Tesseract only</option>
+          <option value=1 selected>1 Neural nets LSTM only</option>
+          <option value=2>2 Tesseract + LSTM</option>
+          <option value=3>3 Default</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="pageSegMode">Page segmentation Mode</label>
+        <select class="form-control" id="pageSegMode">
+          <option value=0>0 Orientation and script detection (OSD) only.</option>
+          <option value=1>1 Automatic page segmentation with OSD.</option>
+          <option value=2>2 Automatic page segmentation, but no OSD, or OCR.</option>
+          <option value=3>3 Fully automatic page segmentation, but no OSD. (Default)</option>
+          <option value=4>4 Assume a single column of text of variable sizes.</option>
+          <option value=5>5 Assume a single uniform block of vertically aligned text.</option>
+          <option value=6>6 Assume a single uniform block of text.</option>
+          <option value=7>7 Treat the image as a single text line.</option>
+          <option value=8>8 Treat the image as a single word.</option>
+          <option value=9>9 Treat the image as a single word in a circle.</option>
+          <option value=10>10 Treat the image as a single character.</option>
+          <option value=11>11 Sparse text. Find as much text as possible in no particular order.</option>
+          <option value=12 selected>12 Sparse text with OSD.</option>
+          <option value=13>13 Raw line. Treat the image as a single text line.</option>
+        </select>
+      </div>
+    </form>
+  </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.panzoom/3.2.2/jquery.panzoom.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.7.1/dat.gui.min.js"></script>
-<script src='js/lib/tesseract/tesseract.js'></script>
 <script src="https://unpkg.com/split.js/split.min.js"></script>
+<script src='js/lib/tesseract/tesseract.js'></script>
 <script src="js/lib/wheelzoom.js"></script>
 <script async src="js/lib/opencv.js"></script>
 <script src="js/panzoom.js"></script>

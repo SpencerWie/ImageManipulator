@@ -19,6 +19,7 @@ ImageObj.prototype.reset = function(){
 }
 
 ImageObj.prototype.update = function(){
+  var imgElement = $("#imageSrc")[0];
   if(imgElement.src.length == 0) return;
 	this.mat = cv.imread(imgElement);
 	this.apply_greyscale();
@@ -82,30 +83,48 @@ ImageObj.prototype.apply_sharpen = function(){
 
 // Applies OCR using Tessseract on both oringal and processed image items.
 ImageObj.prototype.OCR = function(){
-  /*
-  $("textarea").css("background-color", "darkgrey");
-  Tesseract.recognize($('#imageSrc')[0])
+  
+  if($("#tesseractType").val() == "tesseract"){
+    sendImgToServerForOCR($('#canvasOutput')[0], $("#canvasText"));
+    sendImgToServerForOCR(ImgToCanvas($('#imageSrc')[0]), $("#imgText"));
+  } else {
+    OCRwithTesseractJS($('#canvasOutput')[0], $("#canvasText"));
+    OCRwithTesseractJS($('#imageSrc')[0], $("#imgText"));
+  }
+}
+
+function OCRwithTesseractJS(imgEle, $txt) {
+  $txt.css("background-color", "darkgrey");
+  Tesseract.recognize(imgEle)
   .then(function(result){
-      $("#imgText").val(result.text);
-      $("#imgText").css("background-color", "white");
+      $txt.val(result.text);
+      $txt.css("background-color", "white");
   });
-  Tesseract.recognize($('#canvasOutput')[0])
-  .then(function(result){
-      $("#canvasText").val(result.text);
-      $("#canvasText").css("background-color", "white");
-  });
-  */
-  console.log($('#canvasOutput')[0].toDataURL("image/png"));
-  console.log($('#imageSrc').attr("src"));
-  console.log("Running Tesseract through server...");
+}
+
+function sendImgToServerForOCR(imgEle, $txt){
+  $txt.css("background-color", "darkgrey");
+  var imdData = imgEle.toDataURL("image/png");
   var obj = { 
-    base64: $('#canvasOutput')[0].toDataURL("image/png"),
-    imgULR: $('#imageSrc').attr("src")
+    base64: imdData,
+    name: imgEle.id || "out.png"
   };
   $.post("http://127.0.0.1:3000/", JSON.stringify(obj))
     .done(function(data){
-      alert(data);
-    }).fail(function() {
-      console.log("There was a problem running the task on the server.")
-    });
+      $txt.val(data);
+      $txt.css("background-color", "white");
+    }).fail(function(err) {
+      $txt.val("{ERROR}");
+      console.log("There was a problem running the task on the server.");
+      console.log(err);
+    });  
+}
+
+function ImgToCanvas(img){
+  var canvas = document.createElement("canvas");
+  canvas.width = img.width;
+  canvas.height = img.height;
+  var ctx = canvas.getContext("2d");
+  ctx.drawImage(img, 0, 0);
+  return canvas;
 }
