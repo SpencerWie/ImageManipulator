@@ -31,7 +31,7 @@ function handleTesseractPostCall(req, res){
       var filename = obj.name + ".png";
       saveBase64ToPng(obj.base64, filename);
       if(obj.name != null && obj.name.length > 0)
-        runTesseractOCR(filename, res);
+        runTesseractOCR(obj, res);
     } 
     catch(e) {
       console.log("Invalid JSON input detected, aborting request");
@@ -78,13 +78,16 @@ function saveBase64ToPng(base64, filename){
   });
 }
 
-function runTesseractOCR(filename, res){
-  var command = "tesseract " + filename + " stdout --oem 1 --psm 12 -l eng";
+function runTesseractOCR(obj, res){
+  var filename = obj.name + ".png";
+  var oem = obj.oem || 1;
+  var psm = obj.psm || 12;
+  var command = "tesseract " + filename + " stdout --oem " + oem + " --psm " + psm + " -l eng";
   exec(command, (err, stdout, stderr) => {
+    console.log(command);
     if(err){
       console.log("Node.JS was unable to execute the command:");
-      console.log(command);
-      cosnole.log(err);
+      console.log(err);
     }
     res.write(stdout);
     res.end();

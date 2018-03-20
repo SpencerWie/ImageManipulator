@@ -107,7 +107,9 @@ function sendImgToServerForOCR(imgEle, $txt){
   var imdData = imgEle.toDataURL("image/png");
   var obj = { 
     base64: imdData,
-    name: imgEle.id || "out.png"
+    name: imgEle.id || "out",
+    oem: $("#ocrEngineMode").val(),
+    psm: $("#pageSegMode").val()
   };
   $.post("http://127.0.0.1:3000/", JSON.stringify(obj))
     .done(function(data){
